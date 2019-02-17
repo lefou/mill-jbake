@@ -4,7 +4,7 @@ import scala.util.{Success, Try}
 
 import mill._
 import mill.api.{Ctx, IO}
-import mill.define.{Sources, TaskModule}
+import mill.define.{Command, Sources, TaskModule}
 
 trait JBakeModule extends Module with TaskModule {
 
@@ -65,6 +65,11 @@ trait JBakeModule extends Module with TaskModule {
     }
   }
 
+  /**
+    * The directory containing the JBake source files (`assets`, `content`, `templates`).
+    *
+    * Defaults to `src`.
+    */
   def sources: Sources = T.sources {
     millSourcePath / 'src
   }
@@ -98,7 +103,7 @@ trait JBakeModule extends Module with TaskModule {
    *
    * FIXME: This doesn't work for JBake versions since 2.6.2.
    */
-  def jbakeServe() = T.command {
+  def jbakeServe(): Command[Unit] = T.command {
     val jbakeDir = jbake().path
 
     val proc = os.proc(

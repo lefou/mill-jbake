@@ -1,2 +1,66 @@
-= JBake plugin for Mill
+= JBake plugin for mill
+:version: 0.1.0-SNAPSHOT
+
+
+Mill plugin to create static sites/blogs with JBake.
+
+== Quickstart
+
+[scala,subs="attributes"]
+----
+// build.sc
+import mill._
+import $ivy.`de.tototec::de.tobiasroeser.mill.jbake:{version}`
+import de.tobiasroeser.mill.jbake._
+
+object site extends JBakeModule {
+
+  def jbakeVersion = "2.3.2"
+
+}
+----
+
+Generate the site:
+
+[sh]
+----
+sh> mill site.jbake
+----
+
+Start a local Web-Server on Port 8820 with the generated site:
+
+[sh]
+----
+sh> mill site.jbakeServe
+----
+
+== Configuration Options
+
+To use the mill-jbake plugin, you have to extends link:jbake/src/de/tobiasroeser/mill/jbake/JBakeModule.scala[`de.tobiasroeser.mill.jbake.JBakeModule`].
+
+You can override the following methods to customize the behaviour.
+
+* `def jbakeVersion: T[String]` -
+  The JBake version to be used. Mandatory
+
+* `def sources: Sources` -
+  The directory containing the JBake source files (`assets`, `content`, `templates`).
+  Defaults to `src`.
+
+* `def jbake: T[PathRef]` -
+  Bake the site with JBake.
+
+* `def jbakeServe(): Command[Unit]` -
+  Starts a local Webserver to serve the content created with `jbake`.
+
+* `def jbakeDistributionZip: T[PathRef]` -
+  The JBake Binary Distribution ZIP archive.
+  Defaults to downloading the distribution file from Bintray.
+
+* `def jbakeDistributionDir: T[PathRef]` -
+  The unpacked JBake Distribution.
+  Defaults to the unpacked content of the `jbakeDistributionZip`.
+
+* `def jbakeClasspath: T[Seq[PathRef]]` -
+  The classpath used to run the JBake site generator.
 
