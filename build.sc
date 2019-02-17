@@ -1,5 +1,8 @@
 // build.sc
-import mill._, mill.scalalib._, mill.scalalib.publish._
+import mill._
+import mill.define.Sources
+import mill.scalalib._
+import mill.scalalib.publish._
 
 object jbake extends ScalaModule with PublishModule {
 
@@ -7,7 +10,7 @@ object jbake extends ScalaModule with PublishModule {
 
   def scalaVersion = "2.12.8"
 
-  def publishVersion = "0.1.0-SNAPSHOT"
+  def publishVersion = "0.1.0"
 
   def compileIvyDeps = Agg(
     ivy"com.lihaoyi::mill-main:${millVersion}",
@@ -15,7 +18,9 @@ object jbake extends ScalaModule with PublishModule {
     ivy"com.lihaoyi::os-lib:0.2.6"
   )
 
-  def artifactName = T{ "de.tobiasroeser.mill.jbake" }
+  def artifactName = T {
+    "de.tobiasroeser.mill.jbake"
+  }
 
   def pomSettings = T {
     PomSettings(
@@ -26,6 +31,14 @@ object jbake extends ScalaModule with PublishModule {
       versionControl = VersionControl.github("lefou", "mill-jbake"),
       developers = Seq(Developer("lefou", "Tobias Roeser", "https.//github.com/lefou"))
     )
+  }
+
+  override def resources = T.sources {
+    super.resources() ++ Seq(
+      PathRef(millSourcePath / os.up / "LICENSE"),
+      PathRef(millSourcePath / os.up / "README.adoc")
+    )
+
   }
 
 }

@@ -64,3 +64,11 @@ You can override the following methods to customize the behaviour.
 * `def jbakeClasspath: T[Seq[PathRef]]` -
   The classpath used to run the JBake site generator.
 
+== Details
+
+
+== Changelog
+
+=== mill-jbake 0.1.0 - 2019-02-17
+
+* Initial public release
