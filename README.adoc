@@ -1,5 +1,5 @@
 = JBake plugin for mill
-:version: 0.1.0-SNAPSHOT
+:version: 0.1.0
 
 
 Mill plugin to create static sites/blogs with JBake.
