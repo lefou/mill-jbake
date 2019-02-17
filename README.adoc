@@ -6,7 +6,7 @@ Mill plugin to create static sites/blogs with JBake.
 
 == Quickstart
 
-[scala,subs="attributes"]
+[source,scala,subs="verbatim,attributes"]
 ----
 // build.sc
 import mill._
@@ -22,14 +22,14 @@ object site extends JBakeModule {
 
 Generate the site:
 
-[sh]
+[source,sh]
 ----
 sh> mill site.jbake
 ----
 
 Start a local Web-Server on Port 8820 with the generated site:
 
-[sh]
+[source,sh]
 ----
 sh> mill site.jbakeServe
 ----
