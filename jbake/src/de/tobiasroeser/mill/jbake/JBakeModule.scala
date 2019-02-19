@@ -4,7 +4,8 @@ import scala.util.{Success, Try}
 
 import mill._
 import mill.api.{Ctx, IO}
-import mill.define.{Command, Sources, TaskModule}
+import mill.define.{Command, Sources, TaskModule, Worker}
+import os.{Path, Shellable}
 
 trait JBakeModule extends Module with TaskModule {
 
@@ -66,10 +67,10 @@ trait JBakeModule extends Module with TaskModule {
   }
 
   /**
-    * The directory containing the JBake source files (`assets`, `content`, `templates`).
-    *
-    * Defaults to `src`.
-    */
+   * The directory containing the JBake source files (`assets`, `content`, `templates`).
+   *
+   * Defaults to `src`.
+   */
   def sources: Sources = T.sources {
     millSourcePath / 'src
   }
@@ -79,22 +80,7 @@ trait JBakeModule extends Module with TaskModule {
    */
   def jbake: T[PathRef] = T {
     val targetDir = T.ctx().dest
-    val log = T.ctx().log
-
-    // TODO: Use a worker
-
-    val proc = os.proc(
-      "java",
-      "-cp", jbakeClasspath().map(_.path).mkString(":"),
-      "org.jbake.launcher.Main",
-      sources().head.path,
-      targetDir
-    ).call(
-        cwd = targetDir,
-        stdout = os.Inherit,
-        stderr = os.Inherit
-      )
-
+    jbakeWorker().runJbakeMain(targetDir, sources().head.path, targetDir)
     PathRef(targetDir)
   }
 
@@ -104,19 +90,7 @@ trait JBakeModule extends Module with TaskModule {
    * FIXME: This doesn't work for JBake versions since 2.6.2.
    */
   def jbakeServe(): Command[Unit] = T.command {
-    val jbakeDir = jbake().path
-
-    val proc = os.proc(
-      "java",
-      "-cp", jbakeClasspath().map(_.path).mkString(":"),
-      "org.jbake.launcher.Main",
-      "-s", jbakeDir
-    ).call(
-        cwd = T.ctx().dest,
-        stdout = os.Inherit,
-        stderr = os.Inherit
-      )
-
+    jbakeWorker().runJbakeMain(T.ctx().dest, "-s", jbake().path)
   }
 
   /**
@@ -126,9 +100,18 @@ trait JBakeModule extends Module with TaskModule {
     if (!os.walk(sources().head.path).isEmpty) {
       throw new RuntimeException(s"Source directory ${sources().head.path} is not empty. Aborting initializing a fresh JBake project")
     } else {
+
       //      val baseZip = ???
       //      IO.unpackZip(baseZip, )
     }
   }
 
+  /**
+   * The worker encapsulates the process runner of the JBake tool.
+   */
+  def jbakeWorker: Worker[JBakeWorker] = T.worker {
+    new JBakeWorkerImpl(jbakeClasspath().map(_.path))
+  }
+
 }
+
