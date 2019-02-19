@@ -24,11 +24,17 @@ trait JBakeModule extends Module with TaskModule {
    *
    * Defaults to downloading the distribution file from Bintray.
    */
-  def jbakeDistributionZip: T[PathRef] = T {
-    mill.modules.Util.download(
-      s"https://dl.bintray.com/jbake/binary/jbake-${jbakeVersion()}-bin.zip",
-      s"jbake-${jbakeVersion()}-bin.zip"
-    )
+  def jbakeDistributionZip: T[PathRef] = T.persistent {
+    val url = s"https://dl.bintray.com/jbake/binary/jbake-${jbakeVersion()}-bin.zip"
+    val target = T.ctx().dest / s"jbake-${jbakeVersion()}-bin.zip"
+    if(!os.exists(target)) {
+      T.ctx().log.debug(s"Downloading ${url}")
+      val tmpfile = os.temp(dir = T.ctx().dest, deleteOnExit = false)
+      os.remove(tmpfile)
+      mill.modules.Util.download(url, tmpfile.last)
+      os.move(tmpfile, target)
+    }
+    PathRef(target)
   }
 
   /**
@@ -37,6 +43,7 @@ trait JBakeModule extends Module with TaskModule {
    * Defaults to the unpacked content of the [[jbakeDistributionZip]].
    */
   def jbakeDistributionDir: T[PathRef] = T {
+    T.ctx().log.debug(s"Unpacking ${jbakeDistributionZip().path}")
     parseVersion(jbakeVersion()) match {
       case Success(Array(2, 0 | 1 | 2 | 3 | 4 | 5, _)) =>
         PathRef(IO.unpackZip(jbakeDistributionZip().path).path / s"jbake-${jbakeVersion()}")
