@@ -15,7 +15,7 @@ import de.tobiasroeser.mill.jbake._
 
 object site extends JBakeModule {
 
-  def jbakeVersion = "2.3.2"
+  def jbakeVersion = "2.6.4"
 
 }
 ----
@@ -41,7 +41,10 @@ To use the mill-jbake plugin, you have to extends link:jbake/src/de/tobiasroeser
 You can override the following methods to customize the behaviour.
 
 * `def jbakeVersion: T[String]` -
-  The JBake version to be used. Mandatory
+  The JBake version to be used. 
+  Mandatory.
+  Official release versions down to 2.2.0 are supported out of the box.
+  If you need other version or local installation, you need also to customize `jbakeDistributionZip` or `jbakeDistributionDir`.
 
 * `def sources: Sources` -
   The directory containing the JBake source files (`assets`, `content`, `templates`).
