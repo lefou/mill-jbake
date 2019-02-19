@@ -67,10 +67,27 @@ You can override the following methods to customize the behaviour.
 * `def jbakeClasspath: T[Seq[PathRef]]` -
   The classpath used to run the JBake site generator.
 
+* `def jbakeRun(args: String*): Command[Unit]` -
+  Just calls the jbake tool with the given arguments.
+  This might be helpful, if you need to run JBake with different options.
+
+* `def jbakeProcessMode: ProcessMode` -
+  Specify how the JBake tool should be executed.
+  * `ClassLoader` runs JBake in s isolated classpath in the same JVM.
+  * `SubProcess` spawns a new Java sub-process of each JBake tool invokation.
+  Defaults to `ClassLoader` which is also faster.
+  If you experience stability or memory issues, try to change this to `SubProcess`.
+
 == Details
 
 
 == Changelog
+
+===
+
+* Use a worker process to run JBake
+* Added new ClassLoader based JBake worker, to speed up repetitive runs
+* Added new `jbakeRun`target to just run the JBake tool with arbitrary arguments
 
 === mill-jbake 0.1.0 - 2019-02-17
 
