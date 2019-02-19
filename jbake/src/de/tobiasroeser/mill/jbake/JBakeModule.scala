@@ -111,7 +111,7 @@ trait JBakeModule extends Module with TaskModule {
    * The worker encapsulates the process runner of the JBake tool.
    */
   def jbakeWorker: Worker[JBakeWorker] = T.worker {
-    processMode match {
+    jbakeProcessMode match {
       case SubProcess =>
         T.ctx().log.debug("Creating SubProcess JBakeWorker")
         new JBakeWorkerSubProcessImpl(jbakeClasspath().map(_.path))
@@ -131,7 +131,7 @@ trait JBakeModule extends Module with TaskModule {
   /**
    * Specify how the JBake tool should be executed.
    */
-  def processMode: ProcessMode = SubProcess
+  def jbakeProcessMode: ProcessMode = SubProcess
 
 }
 
@@ -141,7 +141,7 @@ object JBakeModule {
   sealed trait ProcessMode
   /** Execute JBake as sub process. */
   final case object SubProcess extends ProcessMode
-  /** Execute JBake as Java Library in a separate ClassLoader. */
+  /** Execute JBake as Java Library in a separate ClassLoader. EXPERIMENTAL! */
   final case object ClassLoader extends ProcessMode
 
 }
