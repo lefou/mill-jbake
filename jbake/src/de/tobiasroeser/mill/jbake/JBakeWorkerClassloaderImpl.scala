@@ -35,10 +35,11 @@ class JBakeWorkerClassloaderImpl(classpath: Seq[Path])(implicit ctx: Log) extend
     val prevSecManager = System.getSecurityManager()
     val securityManager = new SecurityManager() {
       override def checkPermission(perm: Permission): Unit = {
-        prevSecManager match {
-          case null => // Allow everything
-          case sm => sm.checkPermission(perm)
-        }
+        Option(prevSecManager).foreach(_.checkPermission(perm))
+      }
+
+      override def checkPermission(perm: Permission, context: Any): Unit = {
+        Option(prevSecManager).foreach(_.checkPermission(perm, context))
       }
 
       override def checkExit(status: Int): Unit = {
@@ -47,12 +48,15 @@ class JBakeWorkerClassloaderImpl(classpath: Seq[Path])(implicit ctx: Log) extend
     }
 
     System.setSecurityManager(securityManager)
+    val prevCl = Thread.currentThread().getContextClassLoader()
     try {
+      Thread.currentThread().setContextClassLoader(cl)
       mainMethod.invoke(null, args.flatMap(_.value).toArray)
     } catch {
       case e: SecurityException if e.getMessage() == "JBake exit 0" => // JBake exited successfully
     } finally {
-      System.setSecurityManager(prevSecManager);
+      System.setSecurityManager(prevSecManager)
+      Thread.currentThread().setContextClassLoader(prevCl)
     }
 
   }
