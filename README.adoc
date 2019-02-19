@@ -73,10 +73,16 @@ You can override the following methods to customize the behaviour.
 
 * `def jbakeProcessMode: ProcessMode` -
   Specify how the JBake tool should be executed.
-  * `ClassLoader` runs JBake in s isolated classpath in the same JVM.
-  * `SubProcess` spawns a new Java sub-process of each JBake tool invokation.
-  Defaults to `ClassLoader` which is also faster.
-  If you experience stability or memory issues, try to change this to `SubProcess`.
++
+--
+Supported value:
+
+* `ClassLoader` runs JBake in s isolated classpath in the same JVM.
+* `SubProcess` spawns a new Java sub-process of each JBake tool invokation.
+
+Defaults to `ClassLoader` which is also faster.
+If you experience stability or out-of-memory issues, try to change this to `SubProcess`.
+--
 
 == Details
 
