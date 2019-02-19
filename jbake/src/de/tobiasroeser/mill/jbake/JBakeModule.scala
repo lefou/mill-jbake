@@ -8,6 +8,7 @@ import mill.define.{Command, Sources, TaskModule, Worker}
 import os.{Path, Shellable}
 
 trait JBakeModule extends Module with TaskModule {
+  import JBakeModule._
 
   override def defaultCommandName(): String = "jbake"
 
@@ -100,7 +101,7 @@ trait JBakeModule extends Module with TaskModule {
     if (!os.walk(sources().head.path).isEmpty) {
       throw new RuntimeException(s"Source directory ${sources().head.path} is not empty. Aborting initializing a fresh JBake project")
     } else {
-
+      jbakeWorker().runJbakeMain(T.ctx().dest, "-i", sources().head.path)
       //      val baseZip = ???
       //      IO.unpackZip(baseZip, )
     }
@@ -110,8 +111,31 @@ trait JBakeModule extends Module with TaskModule {
    * The worker encapsulates the process runner of the JBake tool.
    */
   def jbakeWorker: Worker[JBakeWorker] = T.worker {
-    new JBakeWorkerImpl(jbakeClasspath().map(_.path))
+    processMode match {
+      case SubProcess =>
+        T.ctx().log.debug("Creating SubProcess JBakeWorker")
+        new JBakeWorkerSubProcessImpl(jbakeClasspath().map(_.path))
+      case ClassLoader =>
+        T.ctx().log.debug("Creating ClassLoader JBakeWorker")
+        new JBakeWorkerClassloaderImpl(jbakeClasspath().map(_.path))
+    }
   }
+
+  /**
+   * Specify how the JBake tool should be executed.
+   */
+  def processMode: ProcessMode = SubProcess
+
+}
+
+object JBakeModule {
+
+  /** Mode how the JBake tool should be executed. */
+  sealed trait ProcessMode
+  /** Execute JBake as sub process. */
+  final case object SubProcess extends ProcessMode
+  /** Execute JBake as Java Library in a separate ClassLoader. */
+  final case object ClassLoader extends ProcessMode
 
 }
 
