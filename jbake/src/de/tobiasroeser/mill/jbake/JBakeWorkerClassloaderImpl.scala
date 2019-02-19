@@ -32,6 +32,9 @@ class JBakeWorkerClassloaderImpl(classpath: Seq[Path])(implicit ctx: Log) extend
     val mainClass = cl.loadClass("org.jbake.launcher.Main")
     val mainMethod = mainClass.getMethod("main", Seq(classOf[Array[String]]): _*)
 
+    // We need a security manager to intercept the System.exit calls
+    // We need a TCCL to fix an issue in JBake 2.6.4 and before finding their bundles properties files
+
     val prevSecManager = System.getSecurityManager()
     val securityManager = new SecurityManager() {
       override def checkPermission(perm: Permission): Unit = {
@@ -47,11 +50,14 @@ class JBakeWorkerClassloaderImpl(classpath: Seq[Path])(implicit ctx: Log) extend
       }
     }
 
-    System.setSecurityManager(securityManager)
     val prevCl = Thread.currentThread().getContextClassLoader()
+    System.setSecurityManager(securityManager)
     try {
       Thread.currentThread().setContextClassLoader(cl)
+
+      // Calling JBake
       mainMethod.invoke(null, args.flatMap(_.value).toArray)
+
     } catch {
       case e: SecurityException if e.getMessage() == "JBake exit 0" => // JBake exited successfully
     } finally {
