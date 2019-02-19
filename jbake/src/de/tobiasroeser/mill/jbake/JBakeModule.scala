@@ -8,6 +8,7 @@ import mill.define.{Command, Sources, TaskModule, Worker}
 import os.{Path, Shellable}
 
 trait JBakeModule extends Module with TaskModule {
+
   import JBakeModule._
 
   override def defaultCommandName(): String = "jbake"
@@ -27,7 +28,7 @@ trait JBakeModule extends Module with TaskModule {
   def jbakeDistributionZip: T[PathRef] = T.persistent {
     val url = s"https://dl.bintray.com/jbake/binary/jbake-${jbakeVersion()}-bin.zip"
     val target = T.ctx().dest / s"jbake-${jbakeVersion()}-bin.zip"
-    if(!os.exists(target)) {
+    if (!os.exists(target)) {
       T.ctx().log.debug(s"Downloading ${url}")
       val tmpfile = os.temp(dir = T.ctx().dest, deleteOnExit = false)
       os.remove(tmpfile)
@@ -146,8 +147,10 @@ object JBakeModule {
 
   /** Mode how the JBake tool should be executed. */
   sealed trait ProcessMode
+
   /** Execute JBake as sub process. */
   final case object SubProcess extends ProcessMode
+
   /** Execute JBake as Java Library in a separate ClassLoader. EXPERIMENTAL! */
   final case object ClassLoader extends ProcessMode
 
