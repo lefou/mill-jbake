@@ -122,6 +122,13 @@ trait JBakeModule extends Module with TaskModule {
   }
 
   /**
+   * Just calls the jbake tool with the given arguments.
+   */
+  def jbakeRun(args: String*) = T.command {
+    jbakeWorker().runJbakeMain(T.ctx().home, args)
+  }
+
+  /**
    * Specify how the JBake tool should be executed.
    */
   def processMode: ProcessMode = SubProcess
