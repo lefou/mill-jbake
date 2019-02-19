@@ -1,5 +1,5 @@
 = JBake plugin for mill
-:version: 0.1.0
+:version: 0.2.0
 
 
 Mill plugin to create static sites/blogs with JBake.
@@ -83,7 +83,7 @@ You can override the following methods to customize the behaviour.
 
 == Changelog
 
-===
+=== mill-jbake 0.2.0 - 2019-02-19
 
 * Use a worker process to run JBake
 * Added new ClassLoader based JBake worker, to speed up repetitive runs

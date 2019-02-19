@@ -10,7 +10,7 @@ object jbake extends ScalaModule with PublishModule {
 
   def scalaVersion = "2.12.8"
 
-  def publishVersion = "0.1.1-SNAPSHOT"
+  def publishVersion = "0.2.0"
 
   def compileIvyDeps = Agg(
     ivy"com.lihaoyi::mill-main:${millVersion}",
