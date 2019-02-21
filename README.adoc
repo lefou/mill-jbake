@@ -1,5 +1,7 @@
 = JBake plugin for mill
 :version: 0.2.0
+:toc:
+:toc-placement: preamble
 
 
 Mill plugin to create static sites/blogs with JBake.
