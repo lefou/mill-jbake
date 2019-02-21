@@ -106,10 +106,12 @@ trait JBakeModule extends Module with TaskModule {
    * Initialized the sources for a new project.
    */
   def jbakeInit() = T.command {
-    if (!os.walk(sources().head.path).isEmpty) {
-      throw new RuntimeException(s"Source directory ${sources().head.path} is not empty. Aborting initializing a fresh JBake project")
+    val src = sources().head.path
+    if (os.exists(src) && !os.walk(src).isEmpty) {
+      throw new RuntimeException(s"Source directory ${src} is not empty. Aborting initialization of fresh JBake project")
     } else {
-      jbakeWorker().runJbakeMain(T.ctx().dest, "-i", sources().head.path)
+      os.makeDir.all(src)
+      jbakeWorker().runJbakeMain(T.ctx().dest, "-i", src)
       //      val baseZip = ???
       //      IO.unpackZip(baseZip, )
     }
