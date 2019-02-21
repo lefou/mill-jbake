@@ -6,6 +6,8 @@
 
 Mill plugin to create static sites/blogs with JBake.
 
+JBake runs completely on the JVM and supports many different template engines and various markup formats, including AsciiDoc(tor).
+
 == Quickstart
 
 [source,scala,subs="verbatim,attributes"]
@@ -36,27 +38,23 @@ Start a local Web-Server on Port 8820 with the generated site:
 sh> mill site.jbakeServe
 ----
 
-== Configuration Options
+== Configuration and Targets
 
 To use the mill-jbake plugin, you have to extends link:jbake/src/de/tobiasroeser/mill/jbake/JBakeModule.scala[`de.tobiasroeser.mill.jbake.JBakeModule`].
 
-You can override the following methods to customize the behaviour.
+.Mandatory Configuration
 
 * `def jbakeVersion: T[String]` -
   The JBake version to be used. 
-  Mandatory.
   Official release versions down to 2.2.0 are supported out of the box.
   If you need other version or local installation, you need also to customize `jbakeDistributionZip` or `jbakeDistributionDir`.
+
+
+.Optional Configuration
 
 * `def sources: Sources` -
   The directory containing the JBake source files (`assets`, `content`, `templates`).
   Defaults to `src`.
-
-* `def jbake: T[PathRef]` -
-  Bake the site with JBake.
-
-* `def jbakeServe(): Command[Unit]` -
-  Starts a local Webserver to serve the content created with `jbake`.
 
 * `def jbakeDistributionZip: T[PathRef]` -
   The JBake Binary Distribution ZIP archive.
@@ -68,10 +66,6 @@ You can override the following methods to customize the behaviour.
 
 * `def jbakeClasspath: T[Seq[PathRef]]` -
   The classpath used to run the JBake site generator.
-
-* `def jbakeRun(args: String*): Command[Unit]` -
-  Just calls the jbake tool with the given arguments.
-  This might be helpful, if you need to run JBake with different options.
 
 * `def jbakeProcessMode: ProcessMode` -
   Specify how the JBake tool should be executed.
@@ -86,10 +80,29 @@ Defaults to `ClassLoader` which is also faster.
 If you experience stability or out-of-memory issues, try to change this to `SubProcess`.
 --
 
-== Details
+.Commands
 
+* `def jbake: T[PathRef]` -
+  Bake the site with JBake.
+
+* `def jbakeServe(): Command[Unit]` -
+  Starts a local Webserver to serve the content created with `jbake`.
+
+* `def jbakeRun(args: String*): Command[Unit]` -
+  Just calls the jbake tool with the given arguments.
+  This might be helpful, if you need to run JBake with different options.
+
+
+== License
+
+mill-jbake is published under the https://www.apache.org/licenses/LICENSE-2.0[Apache[Apache License, Version 2.0].
 
 == Changelog
+
+=== mill-jbake {master}
+
+* Fixed `jbakeInit` command
+
 
 === mill-jbake 0.2.0 - 2019-02-19
 
