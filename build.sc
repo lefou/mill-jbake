@@ -1,8 +1,10 @@
 // build.sc
 import mill._
-import mill.define.Sources
 import mill.scalalib._
 import mill.scalalib.publish._
+
+import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest:0.1.0`, de.tobiasroeser.mill.integrationtest._
+//import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest:0.1.1-SNAPSHOT`, de.tobiasroeser.mill.integrationtest._
 
 object jbake extends ScalaModule with PublishModule {
 
@@ -12,13 +14,13 @@ object jbake extends ScalaModule with PublishModule {
 
   def publishVersion = "0.2.1-SNAPSHOT"
 
-  def compileIvyDeps = Agg(
+  override def compileIvyDeps = Agg(
     ivy"com.lihaoyi::mill-main:${millVersion}",
     ivy"com.lihaoyi::mill-scalalib:${millVersion}",
     ivy"com.lihaoyi::os-lib:0.2.6"
   )
 
-  def artifactName = T {
+  override def artifactName = T {
     "de.tobiasroeser.mill.jbake"
   }
 
@@ -40,5 +42,13 @@ object jbake extends ScalaModule with PublishModule {
     )
 
   }
+
+}
+
+object it extends MillIntegrationTestModule {
+
+  def millTestVersion = T { jbake.millVersion }
+
+  def pluginsUnderTest = Seq(jbake)
 
 }
