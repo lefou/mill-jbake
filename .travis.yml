@@ -9,5 +9,5 @@ env:
   - TEST_MILL_VERSION=0.6.1
 
 script:
-  - ./mill -i itest.test
-  - ./mill -i jbake.publishLocal
+  - ./millw -i itest.test
+  - ./millw -i jbake.publishLocal
