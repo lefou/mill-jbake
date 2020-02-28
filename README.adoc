@@ -3,6 +3,10 @@
 :toc:
 :toc-placement: preamble
 
+ifdef::env-github[]
+image:https://travis-ci.org/lefou/mill-jbake.svg?branch=master["Travis-CI Build Status", link="https://travis-ci.org/lefou/mill-jbake"]
+endif::[]
+
 
 Mill plugin to create static sites/blogs with JBake.
 
