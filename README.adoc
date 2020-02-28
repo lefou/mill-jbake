@@ -1,5 +1,5 @@
 = JBake plugin for mill
-:version: 0.2.0
+:version: 0.2.1
 :toc:
 :toc-placement: preamble
 
@@ -99,10 +99,10 @@ mill-jbake is published under the https://www.apache.org/licenses/LICENSE-2.0[Ap
 
 == Changelog
 
-=== mill-jbake {master}
+=== mill-jbake 0.2.1 - 2020-02-28
 
 * Fixed `jbakeInit` command
-
+* Version bump mill API to 0.6.0
 
 === mill-jbake 0.2.0 - 2019-02-19
 
