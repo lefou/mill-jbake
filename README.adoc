@@ -99,7 +99,7 @@ If you experience stability or out-of-memory issues, try to change this to `SubP
 
 == License
 
-mill-jbake is published under the https://www.apache.org/licenses/LICENSE-2.0[Apache[Apache License, Version 2.0].
+mill-jbake is published under the https://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0].
 
 == Changelog
 
