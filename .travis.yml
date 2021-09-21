@@ -6,7 +6,7 @@ jdk:
 
 env:
   - TEST_MILL_VERSION=0.6.0
-  - TEST_MILL_VERSION=0.6.1
+  - TEST_MILL_VERSION=0.9.9
 
 script:
   - ./millw -i itest.test
