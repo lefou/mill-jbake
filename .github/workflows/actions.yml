@@ -25,6 +25,7 @@ jobs:
         shell: cmd
 
   publish:
+    needs: build
     if: github.repository == 'lefou/mill-jbake' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     concurrency: publish-{{ github.sha }}
