@@ -1,0 +1,47 @@
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        java-version: [8, 11]
+
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.os == 'windows-latest' }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: git fetch --prune --tags --unshallow
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java-version }}
+
+      - run: ./millw -i -k __.compile + __.testCached
+        if: matrix.os != 'windows-latest'
+      - run: ./millw.bat -i -k __.compile + __.testCached
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+
+  publish:
+    if: github.repository == 'lefou/mill-jbake' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    concurrency: publish-{{ github.sha }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: git fetch --prune --tags --unshallow
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Setup GPG secrets for publish
+        run: |
+          gpg --version
+          cat <(echo "${{ secrets.GPG_SECRET_KEY }}") | base64 --decode | gpg --batch --import
+          gpg --list-secret-keys --keyid-format LONG
+      - name: Publish to Maven Central
+        run: ./millw -i mill.scalalib.PublishModule/publishAll --sonatypeCreds "${{ secrets.SONATYPE_CREDS }}" --gpgArgs "--passphrase=${{ secrets.GPG_SECRET_KEY_PASS}},--batch,--yes,-a,-b,--pinentry-mode,loopback" --publishArtifacts __.publishArtifacts --readTimeout 600000 --awaitTimeout 600000 --release true --signed true
+
