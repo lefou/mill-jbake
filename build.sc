@@ -12,13 +12,28 @@ import de.tobiasroeser.mill.vcs.version._
 
 trait Setup {
   val millPlatform: String
-  val millVersion = "0.6.0"
+  val millVersion: String
   def scalaVersion = "2.13.7"
   def testMillVersions: Seq[String]
 }
 
 object Setup {
-  object S06 extends Setup {
+  object R010 extends Setup {
+    override val millPlatform = "0.10"
+    override val millVersion = "0.10.0"
+    override val testMillVersions = Seq("0.10.4", "0.10.3", "0.10.2", "0.10.1", millVersion)
+  }
+  object R09 extends Setup {
+    override val millPlatform = "0.9"
+    override val millVersion = "0.9.3"
+    override val testMillVersions = Seq("0.9.12", millVersion)
+  }
+  object R07 extends Setup {
+    override val millPlatform = "0.7"
+    override val millVersion = "0.7.0"
+    override val testMillVersions = Seq("0.8.0", "0.7.3", millVersion)
+  }
+  object R06 extends Setup {
     override val millPlatform = "0.6"
     override val millVersion = "0.6.0"
     override val scalaVersion = "2.12.8"
@@ -26,7 +41,7 @@ object Setup {
   }
 }
 
-val setups = Seq(Setup.S06)
+val setups = Seq(Setup.R010, Setup.R09, Setup.R07, Setup.R06)
 
 trait JbakeConfig extends CrossScalaModule with PublishModule {
   def millPlatform: String
