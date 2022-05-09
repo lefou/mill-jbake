@@ -1,5 +1,8 @@
 = JBake plugin for mill
-:version: 0.2.1
+:version: 0.2.2
+:min-mill-version: 0.6.0
+:example-mill-version: 0.10.4
+:example-jbake-version: 2.6.4
 :toc:
 :toc-placement: preamble
 
@@ -14,18 +17,26 @@ JBake runs completely on the JVM and supports many different template engines an
 
 == Quickstart
 
+You need at least Mill {min-mill-version}. Using the latest releases Mill version is recommended.
+
 [source,scala,subs="verbatim,attributes"]
 ----
 // build.sc
 import mill._
-import $ivy.`de.tototec::de.tobiasroeser.mill.jbake:{version}`
+import $ivy.`de.tototec::de.tobiasroeser.mill.jbake::{version}` // <1>
 import de.tobiasroeser.mill.jbake._
 
 object site extends JBakeModule {
 
-  def jbakeVersion = "2.6.4"
+  def jbakeVersion = "{example-jbake-version}"
 
 }
+----
+<1>: Import the mill-jbake plugin for the correct Mill platform.
+If you are using an older Mill verion (`< 0.9.9`), you need to add the platform suffix yourself. E.g. to use it with Mill 0.7, your import looks like:
+[source,scala,subs="verbatim,attributes"]
+----
+import $ivy.`de.tototec::de.tobiasroeser.mill.jbake_mill0.6:{version}`
 ----
 
 Generate the site:
@@ -102,6 +113,12 @@ If you experience stability or out-of-memory issues, try to change this to `SubP
 mill-jbake is published under the https://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0].
 
 == Changelog
+
+=== mill-jbake 0.2.2 - 2022-05-09
+
+* Support for newer Mill version up to `0.10.x` via cross building
+* Replaced CI system with GitHub Actions
+* Updated JBake download URL, which changed upstream
 
 === mill-jbake 0.2.1 - 2020-02-28
 
