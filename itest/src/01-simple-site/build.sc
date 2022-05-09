@@ -3,7 +3,7 @@ import mill.define._
 // import $ivy.`de.tototec::de.tobiasroeser.mill.jbake:0.2.0`
 import $exec.plugins
 import de.tobiasroeser.mill.jbake._
-import $ivy.`org.scalatest::scalatest:3.0.4`
+import $ivy.`org.scalatest::scalatest:3.1.4`
 import org.scalatest.Assertions
 
 object site extends JBakeModule {
@@ -18,9 +18,9 @@ def verify(): Command[Unit] = T.command {
   import A._
 
   site.jbakeInit()()
-  val files = os.walk(site.millSourcePath / 'src)
+  val files = os.walk(site.millSourcePath / "src")
 
-  assert(files.contains(site.millSourcePath / 'src / 'templates))
+  assert(files.contains(site.millSourcePath / "src" / "templates"))
 
   ()
 }
