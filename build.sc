@@ -1,27 +1,50 @@
 // build.sc
+
+import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.0`
+import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.1.4`
+
 import mill._
 import mill.scalalib._
 import mill.scalalib.publish._
 
-import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest:0.2.1`, de.tobiasroeser.mill.integrationtest._
+import de.tobiasroeser.mill.integrationtest._
+import de.tobiasroeser.mill.vcs.version._
 
-object jbake extends ScalaModule with PublishModule {
-
+trait Setup {
+  val millPlatform: String
   val millVersion = "0.6.0"
+  def scalaVersion = "2.13.7"
+  def testMillVersions: Seq[String]
+}
 
-  def scalaVersion = "2.12.8"
+object Setup {
+  object S06 extends Setup {
+    override val millPlatform = "0.6"
+    override val millVersion = "0.6.0"
+    override val scalaVersion = "2.12.8"
+    override val testMillVersions = Seq("0.6.3", "0.6.2", "0.6.1", "0.6.0")
+  }
+}
 
-  def publishVersion = "0.2.1"
+val setups = Seq(Setup.S06)
+
+trait JbakeConfig extends CrossScalaModule with PublishModule {
+  def millPlatform: String
+
+  def setup = setups.find(_.millPlatform == millPlatform).get
+  def millVersion = setup.millVersion
+  def crossScalaVersion = setup.scalaVersion
+
+  override def artifactSuffix: T[String] = T(s"_mill${millPlatform}_${artifactScalaVersion()}")
+
+  def publishVersion = VcsVersion.vcsState().format()
 
   override def compileIvyDeps = Agg(
     ivy"com.lihaoyi::mill-main:${millVersion}",
     ivy"com.lihaoyi::mill-scalalib:${millVersion}",
     ivy"com.lihaoyi::os-lib:0.6.3"
   )
-
-  override def artifactName = T {
-    "de.tobiasroeser.mill.jbake"
-  }
+  override def artifactName = T("de.tobiasroeser.mill.jbake")
 
   def pomSettings = T {
     PomSettings(
@@ -39,16 +62,19 @@ object jbake extends ScalaModule with PublishModule {
       PathRef(millSourcePath / os.up / "LICENSE"),
       PathRef(millSourcePath / os.up / "README.adoc")
     )
-
   }
-
 }
 
-object itest extends MillIntegrationTestModule {
+object jbake extends Cross[JbakeCross](setups.map(_.millPlatform): _*)
+class JbakeCross(override val millPlatform: String) extends CrossScalaModule with JbakeConfig
 
-  def millTestVersion = T { T.ctx().env.get("MILL_TEST_VERSION").filterNot(_.isEmpty).getOrElse(jbake.millVersion) }
+object itest extends Cross[ItestCross](setups.flatMap(_.testMillVersions):_*)
+class ItestCross(itestVersion: String) extends MillIntegrationTestModule {
+  override def millSourcePath: os.Path = super.millSourcePath / os.up
 
-  def pluginsUnderTest = Seq(jbake)
+  def setup = setups.find(_.testMillVersions.exists(_ == itestVersion)).get
 
+  def millTestVersion = T(itestVersion)
+  def pluginsUnderTest = Seq(jbake(setup.millPlatform))
 }
 
