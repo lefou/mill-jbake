@@ -26,8 +26,9 @@ trait JBakeModule extends Module with TaskModule {
    * Defaults to downloading the distribution file from Bintray.
    */
   def jbakeDistributionZip: T[PathRef] = T.persistent {
-    val url = s"https://dl.bintray.com/jbake/binary/jbake-${jbakeVersion()}-bin.zip"
-    val target = T.ctx().dest / s"jbake-${jbakeVersion()}-bin.zip"
+    val version = jbakeVersion()
+    val url = s"https://github.com/jbake-org/jbake/releases/download/v${version}/jbake-${version}-bin.zip"
+    val target = T.ctx().dest / s"jbake-${version}-bin.zip"
     if (!os.exists(target)) {
       T.ctx().log.debug(s"Downloading ${url}")
       val tmpfile = os.temp(dir = T.ctx().dest, deleteOnExit = false)
