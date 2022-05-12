@@ -1,8 +1,8 @@
 = JBake plugin for mill
-:version: 0.2.2
+:version: 0.3.0
 :min-mill-version: 0.6.0
 :example-mill-version: 0.10.4
-:example-jbake-version: 2.6.4
+:example-jbake-version: 2.6.7
 :toc:
 :toc-placement: preamble
 
@@ -112,6 +112,12 @@ Defaults to `SubProcess` which is slower but is more robust.
 mill-jbake is published under the https://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0].
 
 == Changelog
+
+=== mill-jbake 0.3.0 - 2022-05-12
+
+* Made `SubProcess` the default process mode
+* Fixed SubProcess worker for Windows
+* Fixed `jbakeServe` command for JBake newer than 2.6.2
 
 === mill-jbake 0.2.2 - 2022-05-09
 
