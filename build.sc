@@ -9,6 +9,7 @@ import mill.scalalib.publish._
 
 import de.tobiasroeser.mill.integrationtest._
 import de.tobiasroeser.mill.vcs.version._
+import mill.define.{Target, Task}
 
 trait Setup {
   val millPlatform: String
@@ -21,7 +22,8 @@ object Setup {
   object R010 extends Setup {
     override val millPlatform = "0.10"
     override val millVersion = "0.10.0"
-    override val testMillVersions = Seq("0.10.4", "0.10.3", "0.10.2", "0.10.1", millVersion)
+    // we skip 0.10.4 tests, as these don't run under windows properly
+    override val testMillVersions = Seq("0.10.3", "0.10.2", "0.10.1", millVersion)
   }
   object R09 extends Setup {
     override val millPlatform = "0.9"
@@ -91,5 +93,13 @@ class ItestCross(itestVersion: String) extends MillIntegrationTestModule {
 
   def millTestVersion = T(itestVersion)
   def pluginsUnderTest = Seq(jbake(setup.millPlatform))
-}
 
+  override def testInvocations: Target[Seq[(PathRef, Seq[TestInvocation.Targets])]] = T {
+    Seq(
+      PathRef(millSourcePath / "src" / "01-simple-site") -> Seq(
+        TestInvocation.Targets(Seq("verify")),
+        TestInvocation.Targets(Seq("site.jbake"))
+      )
+    )
+  }
+}
