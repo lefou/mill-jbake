@@ -9,6 +9,7 @@ import mill.scalalib.publish._
 
 import de.tobiasroeser.mill.integrationtest._
 import de.tobiasroeser.mill.vcs.version._
+import mill.define.{Target, Task}
 
 trait Setup {
   val millPlatform: String
@@ -91,5 +92,14 @@ class ItestCross(itestVersion: String) extends MillIntegrationTestModule {
 
   def millTestVersion = T(itestVersion)
   def pluginsUnderTest = Seq(jbake(setup.millPlatform))
+
+  override def testInvocations: Target[Seq[(PathRef, Seq[TestInvocation.Targets])]] = T {
+    Seq(
+      PathRef(millSourcePath / "src" / "01-simple-site") -> Seq(
+        TestInvocation.Targets(Seq("verify")),
+        TestInvocation.Targets(Seq("site.jbake"))
+      )
+    )
+  }
 }
 

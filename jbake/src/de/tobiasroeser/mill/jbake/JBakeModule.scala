@@ -89,8 +89,9 @@ trait JBakeModule extends Module with TaskModule {
    * Bake the site with JBake.
    */
   def jbake: T[PathRef] = T {
-    val targetDir = T.ctx().dest
-    jbakeWorker().runJbakeMain(targetDir, sources().head.path, targetDir)
+    val targetDir = T.dest
+    val srcDir = sources().head.path
+    jbakeWorker().runJbakeMain(targetDir, srcDir, targetDir)
     PathRef(targetDir)
   }
 
@@ -100,7 +101,9 @@ trait JBakeModule extends Module with TaskModule {
    * FIXME: This doesn't work for JBake versions since 2.6.2.
    */
   def jbakeServe(): Command[Unit] = T.command {
-    jbakeWorker().runJbakeMain(T.ctx().dest, "-s", jbake().path)
+    val srcDir = sources().head.path
+    val outPath = jbake().path
+    jbakeWorker().runJbakeMain(T.ctx().dest, "-s", srcDir, outPath)
   }
 
   /**

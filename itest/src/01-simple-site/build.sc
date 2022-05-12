@@ -8,7 +8,9 @@ import org.scalatest.Assertions
 
 object site extends JBakeModule {
 
-  def jbakeVersion = "2.6.4"
+  override def jbakeVersion = "2.6.4"
+
+  override def jbakeProcessMode = JBakeModule.SubProcess
 
 }
 
