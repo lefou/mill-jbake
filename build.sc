@@ -22,7 +22,7 @@ object Setup {
   object R010 extends Setup {
     override val millPlatform = "0.10"
     override val millVersion = "0.10.0"
-    // we skop 0.10.4 tests, as these don't run under windows properly
+    // we skip 0.10.4 tests, as these don't run under windows properly
     override val testMillVersions = Seq("0.10.3", "0.10.2", "0.10.1", millVersion)
   }
   object R09 extends Setup {
