@@ -13,7 +13,7 @@ endif::[]
 
 Mill plugin to create static sites/blogs with JBake.
 
-JBake runs completely on the JVM and supports many different template engines and various markup formats, including AsciiDoc(tor).
+JBake runs completely on the JVM and supports different template engines and various markup formats, including AsciiDoc(tor).
 
 == Quickstart
 
@@ -36,7 +36,7 @@ object site extends JBakeModule {
 If you are using an older Mill verion (`< 0.9.9`), you need to add the platform suffix yourself. E.g. to use it with Mill 0.7, your import looks like:
 [source,scala,subs="verbatim,attributes"]
 ----
-import $ivy.`de.tototec::de.tobiasroeser.mill.jbake_mill0.6:{version}`
+import $ivy.`de.tototec::de.tobiasroeser.mill.jbake_mill0.7:{version}`
 ----
 
 Generate the site:
@@ -91,8 +91,7 @@ Supported value:
 * `ClassLoader` runs JBake in s isolated classpath in the same JVM.
 * `SubProcess` spawns a new Java sub-process of each JBake tool invokation.
 
-Defaults to `ClassLoader` which is also faster.
-If you experience stability or out-of-memory issues, try to change this to `SubProcess`.
+Defaults to `SubProcess` which is slower but is more robust.
 --
 
 .Commands
