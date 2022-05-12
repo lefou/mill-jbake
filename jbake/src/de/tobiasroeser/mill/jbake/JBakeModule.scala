@@ -145,7 +145,7 @@ trait JBakeModule extends Module with TaskModule {
   /**
    * Specify how the JBake tool should be executed.
    */
-  def jbakeProcessMode: ProcessMode = ClassLoader
+  def jbakeProcessMode: ProcessMode = SubProcess
 
 }
 
