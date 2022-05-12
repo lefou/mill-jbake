@@ -14,7 +14,7 @@ class JBakeWorkerSubProcessImpl(classpath: Seq[Path])(implicit ctx: Log) extends
   def runJbakeMain(cwd: Path, args: Shellable*): Unit = {
     val proc = os.proc(
       "java",
-      "-cp", classpath.mkString(":"),
+      "-cp", classpath.mkString(java.io.File.pathSeparator),
       "org.jbake.launcher.Main",
       args
     )
