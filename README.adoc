@@ -1,23 +1,28 @@
-= JBake plugin for mill
+= JBake plugin for Mill Build Tool
 :version: 0.3.0
 :min-mill-version: 0.6.0
 :example-mill-version: 0.10.4
 :example-jbake-version: 2.6.7
 :toc:
 :toc-placement: preamble
+:project-home: https://github.com/lefou/mill-jbake
+:mill-home: https://github.com/com-lihaoyi/mill
+:jbake-home: https://jbake.org/
 
 ifdef::env-github[]
-image:https://travis-ci.org/lefou/mill-jbake.svg?branch=master["Travis-CI Build Status", link="https://travis-ci.org/lefou/mill-jbake"]
+image:https://github.com/lefou/mill-jbake/actions/workflows/actions.yml/badge.svg["GitHub Actions", link="https://github.com/lefou/mill-jbake/actions/workflows/actions.yml"]
+image:https://javadoc.io/badge2/de.tototec/de.tobiasroeser.mill.jbake_mill0.10_2.13/javadoc.svg["javadoc", link="https://javadoc.io/doc/de.tototec/de.tobiasroeser.mill.jbake_mill0.10_2.13"]
+image:https://index.scala-lang.org/lefou/mill-jbake/de.tobiasroeser.mill.jbake_mill0.10/latest.svg["de.tobiasroeser.mill.jbake_mill0.10", link="https://index.scala-lang.org/lefou/mill-jbake/de.tobiasroeser.mill.jbake_mill0.10"]
 endif::[]
 
 
-Mill plugin to create static sites/blogs with JBake.
+{mill-home}[Mill] plugin to create static sites/blogs with {jbake-home}[JBake].
 
 JBake runs completely on the JVM and supports different template engines and various markup formats, including AsciiDoc(tor).
 
 == Quickstart
 
-You need at least Mill {min-mill-version}. Using the latest releases Mill version is recommended.
+You need at least Mill in version {min-mill-version}. Using the latest releases Mill version is recommended.
 
 [source,scala,subs="verbatim,attributes"]
 ----
@@ -110,6 +115,31 @@ Defaults to `SubProcess` which is slower but is more robust.
 == License
 
 mill-jbake is published under the https://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0].
+
+
+== About
+
+mill::
+{mill-home}[Mill] is a Scala-based open source build tool.
+In my opinion the best build tool for the JVM.
+It is fast, reliable and easy to understand.
+
+me::
++
+--
+My name is https://github.com/lefou/[Tobias Roeser] and I'm a professional software developer and love to write and use open source software.
+I'm actively developing and maintaining Mill as well as https://github.com/lefou?utf8=%E2%9C%93&tab=repositories&q=topic%3Amill&type=&language=[several Mill plugins].
+
+If you like my work, please star it on GitHub. You can also support me via https://github.com/sponsors/lefou[GitHub Sponsors].
+--
+
+Contributing::
+If you found a bug or have a feature request, please open a {project-home}/issues[new issue on GitHub].
+I also accept {project-home}/pulls[pull requests on GitHub].
+
+Questions::
+You can also ask questions in the {mill-home}/discussions[Mill discussions forum] or in the https://gitter.im/lihaoyi/mill[Mill Gitter channel].
+
 
 == Changelog
 
