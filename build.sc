@@ -14,7 +14,7 @@ import mill.define.{Target, Task}
 trait Setup {
   val millPlatform: String
   val millVersion: String
-  def scalaVersion = "2.13.7"
+  def scalaVersion = "2.13.11"
   def testMillVersions: Seq[String]
 }
 
@@ -23,7 +23,7 @@ object Setup {
     override val millPlatform = "0.10"
     override val millVersion = "0.10.0"
     // we skip 0.10.4 tests, as these don't run under windows properly
-    override val testMillVersions = Seq("0.10.3", "0.10.2", "0.10.1", millVersion)
+    override val testMillVersions = Seq("0.10.12", millVersion)
   }
   object R09 extends Setup {
     override val millPlatform = "0.9"
