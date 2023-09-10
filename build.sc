@@ -59,7 +59,7 @@ trait JbakeConfig extends CrossScalaModule with PublishModule {
   override def compileIvyDeps = Agg(
     ivy"com.lihaoyi::mill-main:${millVersion}",
     ivy"com.lihaoyi::mill-scalalib:${millVersion}",
-    ivy"com.lihaoyi::os-lib:0.6.3"
+    ivy"com.lihaoyi::os-lib:0.9.1"
   )
   override def artifactName = T("de.tobiasroeser.mill.jbake")
 
