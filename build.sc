@@ -21,7 +21,7 @@ trait Setup {
 object Setup {
   object R010 extends Setup {
     override val millPlatform = "0.10"
-    override val millVersion = "0.10.0"
+    override val millVersion = "0.10.12"
     // we skip 0.10.4 tests, as these don't run under windows properly
     override val testMillVersions = Seq("0.10.12", millVersion)
   }
