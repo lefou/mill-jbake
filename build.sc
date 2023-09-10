@@ -32,7 +32,7 @@ object Setup {
   }
   object R07 extends Setup {
     override val millPlatform = "0.7"
-    override val millVersion = "0.7.0"
+    override val millVersion = "0.7.4"
     override val testMillVersions = Seq("0.8.0", "0.7.3", millVersion)
   }
   object R06 extends Setup {
