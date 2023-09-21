@@ -1,7 +1,7 @@
 // build.sc
 
 import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.1`
-import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.1.4`
+import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.4.0`
 
 import mill._
 import mill.scalalib._
@@ -14,7 +14,7 @@ import mill.define.{Target, Task}
 trait Setup {
   val millPlatform: String
   val millVersion: String
-  def scalaVersion = "2.13.11"
+  def scalaVersion = "2.13.12"
   def testMillVersions: Seq[String]
 }
 
@@ -38,7 +38,7 @@ object Setup {
   object R06 extends Setup {
     override val millPlatform = "0.6"
     override val millVersion = "0.6.0"
-    override val scalaVersion = "2.12.15"
+    override val scalaVersion = "2.12.18"
     override val testMillVersions = Seq("0.6.3", "0.6.2", "0.6.1", "0.6.0")
   }
 }
