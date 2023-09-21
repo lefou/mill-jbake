@@ -1,7 +1,7 @@
 // build.sc
 
 import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.0`
-import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.1.4`
+import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.4.0`
 
 import mill._
 import mill.scalalib._
