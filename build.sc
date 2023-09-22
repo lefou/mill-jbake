@@ -37,7 +37,7 @@ object Setup {
   }
   object R06 extends Setup {
     override val millPlatform = "0.6"
-    override val millVersion = "0.6.3"
+    override val millVersion = "0.6.0"
     override val scalaVersion = "2.12.15"
     override val testMillVersions = Seq("0.6.3", "0.6.2", "0.6.1", "0.6.0")
   }
