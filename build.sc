@@ -1,7 +1,7 @@
 // build.sc
 
 import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.0`
-import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.1.4`
+import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.4.0`
 
 import mill._
 import mill.scalalib._
@@ -14,32 +14,37 @@ import mill.define.{Target, Task}
 trait Setup {
   val millPlatform: String
   val millVersion: String
-  def scalaVersion = "2.13.11"
+  def scalaVersion = "2.13.12"
   def testMillVersions: Seq[String]
+  def osLibVersion: String
 }
 
 object Setup {
   object R010 extends Setup {
     override val millPlatform = "0.10"
-    override val millVersion = "0.10.0"
+    override val millVersion = "0.10.0" // scala-steward:off
     // we skip 0.10.4 tests, as these don't run under windows properly
     override val testMillVersions = Seq("0.10.12", millVersion)
+    override val osLibVersion = "0.8.0" // scala-steward:off
   }
   object R09 extends Setup {
     override val millPlatform = "0.9"
-    override val millVersion = "0.9.3"
+    override val millVersion = "0.9.3" // scala-steward:off
     override val testMillVersions = Seq("0.9.12", millVersion)
+    override val osLibVersion = "0.7.1" // scala-steward:off
   }
   object R07 extends Setup {
     override val millPlatform = "0.7"
-    override val millVersion = "0.7.0"
+    override val millVersion = "0.7.0" // scala-steward:off
     override val testMillVersions = Seq("0.8.0", "0.7.3", millVersion)
+    override val osLibVersion = "0.7.0" // scala-steward:off
   }
   object R06 extends Setup {
     override val millPlatform = "0.6"
-    override val millVersion = "0.6.0"
-    override val scalaVersion = "2.12.15"
+    override val millVersion = "0.6.0" // scala-steward:off
+    override val scalaVersion = "2.12.18"
     override val testMillVersions = Seq("0.6.3", "0.6.2", "0.6.1", "0.6.0")
+    override val osLibVersion = "0.6.3" // scala-steward:off
   }
 }
 
@@ -59,7 +64,7 @@ trait JbakeConfig extends CrossScalaModule with PublishModule {
   override def compileIvyDeps = Agg(
     ivy"com.lihaoyi::mill-main:${millVersion}",
     ivy"com.lihaoyi::mill-scalalib:${millVersion}",
-    ivy"com.lihaoyi::os-lib:0.6.3"
+    ivy"com.lihaoyi::os-lib:${setup.osLibVersion}"
   )
   override def artifactName = T("de.tobiasroeser.mill.jbake")
 
