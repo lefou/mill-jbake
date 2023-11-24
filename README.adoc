@@ -1,10 +1,8 @@
 = JBake plugin for Mill Build Tool
-:version: 0.3.0
+:version: 0.3.1
 :min-mill-version: 0.6.0
-:example-mill-version: 0.10.4
+:example-mill-version: 0.11.6
 :example-jbake-version: 2.6.7
-:toc:
-:toc-placement: preamble
 :project-home: https://github.com/lefou/mill-jbake
 :mill-home: https://github.com/com-lihaoyi/mill
 :jbake-home: https://jbake.org/
@@ -143,29 +141,34 @@ You can also ask questions in the {mill-home}/discussions[Mill discussions forum
 
 == Changelog
 
-=== mill-jbake 0.3.0 - 2022-05-12
+=== 0.3.1 - 2023-11-24
+
+* Added support for Mill 0.11
+* Build with Mill 0.11
+
+=== 0.3.0 - 2022-05-12
 
 * Made `SubProcess` the default process mode
 * Fixed SubProcess worker for Windows
 * Fixed `jbakeServe` command for JBake newer than 2.6.2
 
-=== mill-jbake 0.2.2 - 2022-05-09
+=== 0.2.2 - 2022-05-09
 
 * Support for newer Mill version up to `0.10.x` via cross building
 * Replaced CI system with GitHub Actions
 * Updated JBake download URL, which changed upstream
 
-=== mill-jbake 0.2.1 - 2020-02-28
+=== 0.2.1 - 2020-02-28
 
 * Fixed `jbakeInit` command
 * Version bump mill API to 0.6.0
 
-=== mill-jbake 0.2.0 - 2019-02-19
+=== 0.2.0 - 2019-02-19
 
 * Use a worker process to run JBake
 * Added new ClassLoader based JBake worker, to speed up repetitive runs
 * Added new `jbakeRun`target to just run the JBake tool with arbitrary arguments
 
-=== mill-jbake 0.1.0 - 2019-02-17
+=== 0.1.0 - 2019-02-17
 
 * Initial public release
