@@ -9,7 +9,7 @@ import mill.scalalib.publish._
 
 import de.tobiasroeser.mill.integrationtest._
 import de.tobiasroeser.mill.vcs.version._
-import mill.define.{Target, Task}
+import mill.define.{Cross, Target, Task}
 
 trait Setup {
   val millPlatform: String
@@ -24,7 +24,7 @@ object Setup {
     override val millPlatform = "0.10"
     override val millVersion = "0.10.0" // scala-steward:off
     // we skip 0.10.4 tests, as these don't run under windows properly
-    override val testMillVersions = Seq("0.10.12", millVersion)
+    override val testMillVersions = Seq("0.10.13", millVersion)
     override val osLibVersion = "0.8.0" // scala-steward:off
   }
   object R09 extends Setup {
@@ -50,12 +50,13 @@ object Setup {
 
 val setups = Seq(Setup.R010, Setup.R09, Setup.R07, Setup.R06)
 
-trait JbakeConfig extends CrossScalaModule with PublishModule {
-  def millPlatform: String
+object jbake extends Cross[JbakeCross](setups.map(_.millPlatform))
+trait JbakeCross extends ScalaModule with PublishModule with Cross.Module[String] {
+  def millPlatform = crossValue
 
   def setup = setups.find(_.millPlatform == millPlatform).get
   def millVersion = setup.millVersion
-  def crossScalaVersion = setup.scalaVersion
+  def scalaVersion = setup.scalaVersion
 
   override def artifactSuffix: T[String] = T(s"_mill${millPlatform}_${artifactScalaVersion()}")
 
@@ -87,12 +88,9 @@ trait JbakeConfig extends CrossScalaModule with PublishModule {
   }
 }
 
-object jbake extends Cross[JbakeCross](setups.map(_.millPlatform): _*)
-class JbakeCross(override val millPlatform: String) extends CrossScalaModule with JbakeConfig
-
-object itest extends Cross[ItestCross](setups.flatMap(_.testMillVersions):_*)
-class ItestCross(itestVersion: String) extends MillIntegrationTestModule {
-  override def millSourcePath: os.Path = super.millSourcePath / os.up
+object itest extends Cross[ItestCross](setups.flatMap(_.testMillVersions))
+trait ItestCross extends MillIntegrationTestModule with Cross.Module[String] {
+  def itestVersion = crossValue
 
   def setup = setups.find(_.testMillVersions.exists(_ == itestVersion)).get
 
