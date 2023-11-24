@@ -20,6 +20,12 @@ trait Setup {
 }
 
 object Setup {
+  object R011 extends Setup {
+    override val millPlatform = "0.11"
+    override val millVersion = "0.11.0" // scala-steward:off
+    override val testMillVersions = Seq("0.11.6", millVersion)
+    override val osLibVersion = "0.9.1" // scala-steward:off
+  }
   object R010 extends Setup {
     override val millPlatform = "0.10"
     override val millVersion = "0.10.0" // scala-steward:off
