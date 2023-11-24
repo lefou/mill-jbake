@@ -23,7 +23,7 @@ import A._
 
 val sites = Seq(siteSp, siteCl)
 
-def verifyInit(site: JBakeModule) = T.task {
+def vInit(site: JBakeModule) = T.task {
 
   site.jbakeInit()()
 
@@ -50,7 +50,7 @@ def verifyInit(site: JBakeModule) = T.task {
   } assert(files.contains(dir / file))
 }
 
-def verifyBake(site: JBakeModule) = T.task {
+def vBake(site: JBakeModule) = T.task {
   site.jbake()
 
   val expected = Seq(
@@ -61,7 +61,10 @@ def verifyBake(site: JBakeModule) = T.task {
 
   )
 
-  val dir = os.pwd / "out" / site.toString() / "jbake.dest"
+  val dir = Option(os.pwd / "out" / site.toString() / "jbake.dest")
+    // Support for older out layout
+    .filter(os.exists)
+    .getOrElse(os.pwd / "out" / site.toString() / "jbake" / "dest")
   val files = os.walk(dir)
 
   for {
@@ -69,13 +72,13 @@ def verifyBake(site: JBakeModule) = T.task {
   } assert(files.contains(dir / file))
 }
 
-def verifyInit(): Command[Unit] = T.command {
-  T.traverse(sites)(s => verifyInit(s))()
+def verifyInit() = T.command {
+  T.traverse(sites)(s => vInit(s))()
   ()
 }
 
-def verifyBake(): Command[Unit] = T.command {
+def verifyBake() = T.command {
   // Classloader mode does not work anymore with newer Java
-  T.traverse(Seq(siteSp))(s => verifyBake(s))()
+  T.traverse(Seq(siteSp))(s => vBake(s))()
   ()
 }
