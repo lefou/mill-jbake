@@ -54,7 +54,7 @@ object Setup {
   }
 }
 
-val setups = Seq(Setup.R010, Setup.R09, Setup.R07, Setup.R06)
+val setups = Seq(Setup.R011, Setup.R010, Setup.R09, Setup.R07, Setup.R06)
 
 object jbake extends Cross[JbakeCross](setups.map(_.millPlatform))
 trait JbakeCross extends ScalaModule with PublishModule with Cross.Module[String] {
@@ -106,8 +106,8 @@ trait ItestCross extends MillIntegrationTestModule with Cross.Module[String] {
   override def testInvocations: Target[Seq[(PathRef, Seq[TestInvocation.Targets])]] = T {
     Seq(
       PathRef(millSourcePath / "src" / "01-simple-site") -> Seq(
-        TestInvocation.Targets(Seq("verify")),
-        TestInvocation.Targets(Seq("site.jbake"))
+        TestInvocation.Targets(Seq("verifyInit")),
+        TestInvocation.Targets(Seq("verifyBake"))
       )
     )
   }

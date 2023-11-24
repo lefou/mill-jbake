@@ -70,9 +70,9 @@ trait JBakeModule extends Module with TaskModule {
     parseVersion(jbakeVersion()) match {
       case Success(Array(2, 0 | 1 | 2 | 3 | 4 | 5, _)) =>
         (Seq(jbakeDistributionDir().path / "jbake-core.jar") ++
-          os.list(jbakeDistributionDir().path / 'lib)).map(PathRef(_))
+          os.list(jbakeDistributionDir().path / "lib")).map(PathRef(_))
       case _ =>
-        os.list(jbakeDistributionDir().path / 'lib).map(PathRef(_))
+        os.list(jbakeDistributionDir().path / "lib").map(PathRef(_))
     }
   }
 
@@ -109,7 +109,7 @@ trait JBakeModule extends Module with TaskModule {
   /**
    * Initialized the sources for a new project.
    */
-  def jbakeInit() = T.command {
+  def jbakeInit(): Command[PathRef] = T.command {
     val src = sources().head.path
     if (os.exists(src) && !os.walk(src).isEmpty) {
       throw new RuntimeException(s"Source directory ${src} is not empty. Aborting initialization of fresh JBake project")
@@ -119,6 +119,7 @@ trait JBakeModule extends Module with TaskModule {
       //      val baseZip = ???
       //      IO.unpackZip(baseZip, )
     }
+    PathRef(T.ctx().dest)
   }
 
   /**
