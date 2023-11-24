@@ -61,7 +61,7 @@ def verifyBake(site: JBakeModule) = T.task {
 
   )
 
-  val dir = T.workspace / "out" / site.toString() / "jbake.dest"
+  val dir = os.pwd / "out" / site.toString() / "jbake.dest"
   val files = os.walk(dir)
 
   for {
