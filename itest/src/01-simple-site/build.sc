@@ -23,7 +23,7 @@ import A._
 
 val sites = Seq(siteSp, siteCl)
 
-def verifyInit(site: JBakeModule): Task[Unit] = T.task {
+def verifyInit(site: JBakeModule) = T.task {
 
   site.jbakeInit()()
 
@@ -50,7 +50,7 @@ def verifyInit(site: JBakeModule): Task[Unit] = T.task {
   } assert(files.contains(dir / file))
 }
 
-def verifyBake(site: JBakeModule): Task[Unit] = T.task {
+def verifyBake(site: JBakeModule) = T.task {
   site.jbake()
 
   val expected = Seq(
