@@ -20,6 +20,12 @@ trait Setup {
 }
 
 object Setup {
+  object R011 extends Setup {
+    override val millPlatform = "0.11"
+    override val millVersion = "0.11.0" // scala-steward:off
+    override val testMillVersions = Seq("0.11.6", millVersion)
+    override val osLibVersion = "0.9.1" // scala-steward:off
+  }
   object R010 extends Setup {
     override val millPlatform = "0.10"
     override val millVersion = "0.10.0" // scala-steward:off
@@ -48,7 +54,7 @@ object Setup {
   }
 }
 
-val setups = Seq(Setup.R010, Setup.R09, Setup.R07, Setup.R06)
+val setups = Seq(Setup.R011, Setup.R010, Setup.R09, Setup.R07, Setup.R06)
 
 object jbake extends Cross[JbakeCross](setups.map(_.millPlatform))
 trait JbakeCross extends ScalaModule with PublishModule with Cross.Module[String] {
@@ -100,8 +106,8 @@ trait ItestCross extends MillIntegrationTestModule with Cross.Module[String] {
   override def testInvocations: Target[Seq[(PathRef, Seq[TestInvocation.Targets])]] = T {
     Seq(
       PathRef(millSourcePath / "src" / "01-simple-site") -> Seq(
-        TestInvocation.Targets(Seq("verify")),
-        TestInvocation.Targets(Seq("site.jbake"))
+        TestInvocation.Targets(Seq("verifyInit")),
+        TestInvocation.Targets(Seq("verifyBake"))
       )
     )
   }
