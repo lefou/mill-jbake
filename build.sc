@@ -48,7 +48,7 @@ object Setup {
   object R06 extends Setup {
     override val millPlatform = "0.6"
     override val millVersion = "0.6.0" // scala-steward:off
-    override val scalaVersion = "2.12.19"
+    override val scalaVersion = "2.12.20"
     override val testMillVersions = Seq("0.6.3", "0.6.2", "0.6.1", "0.6.0")
     override val osLibVersion = "0.6.3" // scala-steward:off
   }
