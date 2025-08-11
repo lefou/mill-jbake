@@ -12,7 +12,7 @@ jobs:
     # continue-on-error: ${{ matrix.os == 'windows-latest' }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: git fetch --prune --tags --unshallow
 
       - uses: actions/setup-java@v4
@@ -33,7 +33,7 @@ jobs:
     concurrency: publish-{{ github.sha }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: git fetch --prune --tags --unshallow
 
       - uses: actions/setup-java@v4
