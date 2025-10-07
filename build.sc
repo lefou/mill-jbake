@@ -14,7 +14,7 @@ import mill.define.{Cross, Target, Task}
 trait Setup {
   val millPlatform: String
   val millVersion: String
-  def scalaVersion = "2.13.15"
+  def scalaVersion = "2.13.17"
   def testMillVersions: Seq[String]
   def osLibVersion: String
 }
